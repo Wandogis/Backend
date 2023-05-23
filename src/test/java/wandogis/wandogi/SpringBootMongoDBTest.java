@@ -15,7 +15,7 @@ public class SpringBootMongoDBTest {
 
     @Test
     public void printMongoDB() {
-        System.out.println(mongoDBRepository.findByName("park").getName());
+        System.out.println(mongoDBRepository.findByName("이완득").getName());
         List<Users> result = mongoDBRepository.findAll();
         for(Users users : result) {
             System.out.print(users.getName() + ", ");

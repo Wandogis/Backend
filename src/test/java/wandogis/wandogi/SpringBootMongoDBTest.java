@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import wandogis.wandogi.domain.Users;
+import wandogis.wandogi.repository.PostsMongoDBRepository;
 import wandogis.wandogi.repository.UsersMongoDBRepository;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 public class SpringBootMongoDBTest {
     @Autowired
     private UsersMongoDBRepository mongoDBRepository;
+    @Autowired
+    private PostsMongoDBRepository postsMongoDBRepository;
 
     @Test
     public void printMongoDB() {
@@ -20,5 +23,10 @@ public class SpringBootMongoDBTest {
         for(Users users : result) {
             System.out.print(users.getName() + ", ");
         }
+    }
+
+    @Test
+    public void printPostsDB() {
+        System.out.println(postsMongoDBRepository.findByTitle("완득이 후기").getTitle());
     }
 }

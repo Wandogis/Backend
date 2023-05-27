@@ -17,7 +17,10 @@ derby.log
 
 # Gradle artifacts
 .gradle
+.gradle/
 .gradletasknamecache
+build
+build/
 /build
 buildSrc/build
 /spring-*/build
@@ -44,6 +47,7 @@ spring-*/src/main/java/META-INF/MANIFEST.MF
 *.ipr
 *.iws
 .idea
+.idea/
 out
 test-output
 atlassian-ide-plugin.xml

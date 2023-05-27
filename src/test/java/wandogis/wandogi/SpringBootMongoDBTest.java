@@ -27,28 +27,21 @@ public class SpringBootMongoDBTest {
 
     @Test
     public void printMongoDB() {
-        System.out.println(mongoDBRepository.findByName("ㅇㅇ").getName());
+        System.out.println(mongoDBRepository.findByName("park").getName());
         List<Users> result = mongoDBRepository.findAll();
         for(Users users : result) {
             System.out.print(users.getName() + ", ");
         }
     }
 
-    @Test
-    public void printPostsDB() {
-        System.out.println(postsMongoDBRepository.findByTitle("완득이 후기").getTitle());
-    }
+//    @Test
+//    public void printPostsDB() {
+//        System.out.println(postsMongoDBRepository.findByTitle("완득이 후기").getTitle());
+//    }
 
     @Test
     public void printChallengesDB() {
         List<Challenges> list = challengeService.getChallengeListsByView();
         System.out.println(list);
-//        System.out.println(list.get(0).getId());
-//        System.out.println(list.get(0).getTitle());
-//        System.out.println(list.get(0).getPhoto());
-//        System.out.println(list.get(0).getView());
-//        System.out.println(list.get(0).getStartDate());
-//        System.out.println(list.get(0).getEndDate());
-//        System.out.println(list.get(0).getSuccess());
     }
 }

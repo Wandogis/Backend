@@ -54,6 +54,18 @@ public class SpringBootMongoDBTest {
 
     @Test
     public void printLocalDate() {
-        System.out.println(challengeService.getChallengeListsByStartDate());
+        System.out.println(challengeService.getChallengeListsByEndDateAndStartDate());
+    }
+
+    @Test
+    public void printGoingViewChallengesDB() {
+        List<Challenges> goingList = challengeService.getChallengeListsByEndDateAndStartDate();
+        System.out.println(challengeService.getChallengeListsByView(goingList));
+    }
+
+    @Test
+    public void printGoingLatestChallengesDB() {
+        List<Challenges> goingList = challengeService.getChallengeListsByEndDateAndStartDate();
+        System.out.println(challengeService.getChallengeListsByDate(goingList));
     }
 }

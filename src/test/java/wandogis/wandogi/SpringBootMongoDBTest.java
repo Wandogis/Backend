@@ -10,6 +10,7 @@ import wandogis.wandogi.repository.PostsMongoDBRepository;
 import wandogis.wandogi.repository.UsersMongoDBRepository;
 import wandogis.wandogi.service.ChallengeService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest()
@@ -40,8 +41,19 @@ public class SpringBootMongoDBTest {
 //    }
 
     @Test
-    public void printChallengesDB() {
-        List<Challenges> list = challengeService.getChallengeListsByView();
-        System.out.println(list);
+    public void printExpectedViewChallengesDB() {
+        List<Challenges> list = challengeService.getChallengeListsByStartDate();
+        System.out.println(challengeService.getChallengeListsByView(list));
+    }
+
+    @Test
+    public void printExpectedLatestChallengesDB() {
+        List<Challenges> list = challengeService.getChallengeListsByStartDate();
+        System.out.println(challengeService.getChallengeListsByDate(list));
+    }
+
+    @Test
+    public void printLocalDate() {
+        System.out.println(challengeService.getChallengeListsByStartDate());
     }
 }

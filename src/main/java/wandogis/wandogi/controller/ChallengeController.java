@@ -16,10 +16,19 @@ import java.util.List;
 public class ChallengeController {
     private ChallengeService challengeService;
 
-    @GetMapping("/view-list")
+    @GetMapping("/list/expected-view")
     public String viewList(Model model) {
-        List<Challenges> viewList = challengeService.getChallengeListsByView();
+        List<Challenges> expectedList = challengeService.getChallengeListsByStartDate();
+        List<Challenges> viewList = challengeService.getChallengeListsByView(expectedList);
         model.addAttribute("viewList", viewList);
-        return "challenges/viewList";
+        return "challenges/expectedViewList";
+    }
+
+    @GetMapping("/list/expected-latest")
+    public String latestList(Model model) {
+        List<Challenges> expectedList = challengeService.getChallengeListsByStartDate();
+        List<Challenges> latestList = challengeService.getChallengeListsByDate(expectedList);
+        model.addAttribute("latestList", latestList);
+        return "challenges/expectedLatestList";
     }
 }

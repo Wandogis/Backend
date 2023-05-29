@@ -1,8 +1,10 @@
 package wandogis.wandogi.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -22,7 +24,9 @@ public class Challenges {
     private String photo;
     private int page;  // 진도율 저장을 위한 페이지 수
     private int view;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
     private ArrayList<ObjectId> people;   // 챌린지 참여한 사람들 Users 배열
     private ArrayList<Double> progress;    // 진도율(people 배열과 동일한 index를 가진 값이 그 유저의 진도율)

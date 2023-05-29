@@ -19,23 +19,30 @@ public class ChallengeService {
     }
 
     /**
-     * 메인페이지 - 진행 중/예정인 챌린지 목록 조회
-     * 1. 인기순
-     * 2. 최신순
+     * 진행 예정 챌린지 목록
      */
     public List<Challenges> getChallengeListsByStartDate() {
         return challengeRepository.findAllByStartDateAfter(LocalDateTime.now());
     }
 
-    public List<Challenges> getChallengeListsByStartDateAndEndDate() {
-        return challengeRepository.findAllByStartDateAfterAndEndDateBefore(LocalDateTime.now());
+    /**
+     * 진행 중인 챌린지 목록
+     */
+    public List<Challenges> getChallengeListsByEndDateAndStartDate() {
+        return challengeRepository.findAllByEndDateAfterAndStartDateBefore(LocalDateTime.now(), LocalDateTime.now());
     }
 
+    /**
+     * 챌린지 목록 인기순
+     */
     public List<Challenges> getChallengeListsByView(List<Challenges> list) {
         Collections.sort(list, new ChallengeViewComparator());    // view 수로 정렬
         return list.subList(0, 3);    // 정렬된 리스트 중 앞 5개만 뽑음
     }
 
+    /**
+     * 챌린지 목록 최신순
+     */
     public List<Challenges> getChallengeListsByDate(List<Challenges> list) {
         Collections.sort(list, new ChallengDateComparator());    // startDate 빠른 순으로 정렬
         return list.subList(0, 3);    // 정렬된 리스트 중 앞 5개만 뽑음

@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ChatGptService {
     private static RestTemplate restTemplate = new RestTemplate();
@@ -28,16 +31,10 @@ public class ChatGptService {
     }
 
     public ChatGptResponseDto askQuestion(QuestionRequestDto requestDto) {
+        ChatGptRequestDto chatGptRequestDto = new ChatGptRequestDto(ChatGptConfig.MODEL, requestDto.getMessages());
+
         return this.getResponse(
-                this.buildHttpEntity(
-                        new ChatGptRequestDto(
-                                ChatGptConfig.MODEL,
-                                requestDto.getQuestion(),
-                                ChatGptConfig.MAX_TOKEN,
-                                ChatGptConfig.TEMPERATURE,
-                                ChatGptConfig.TOP_P
-                        )
-                )
+                this.buildHttpEntity(chatGptRequestDto)
         );
     }
 }

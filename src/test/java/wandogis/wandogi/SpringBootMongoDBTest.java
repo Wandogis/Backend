@@ -42,30 +42,30 @@ public class SpringBootMongoDBTest {
 
     @Test
     public void printExpectedViewChallengesDB() {
-        List<Challenges> list = challengeService.getChallengeListsByStartDate();
-        System.out.println(challengeService.getChallengeListsByView(list));
+        List<Challenges> list = challengeService.getChallengeListByStartDate();
+        System.out.println(challengeService.getChallengeListByView(list));
     }
 
     @Test
     public void printExpectedLatestChallengesDB() {
-        List<Challenges> list = challengeService.getChallengeListsByStartDate();
-        System.out.println(challengeService.getChallengeListsByDate(list));
+        List<Challenges> list = challengeService.getChallengeListByStartDate();
+        System.out.println(challengeService.getChallengeListByDate(list));
     }
 
     @Test
     public void printLocalDate() {
-        System.out.println(challengeService.getChallengeListsByEndDateAndStartDate());
+        System.out.println(challengeService.getChallengeListByEndDateAndStartDate());
     }
 
     @Test
     public void printGoingViewChallengesDB() {
-        List<Challenges> goingList = challengeService.getChallengeListsByEndDateAndStartDate();
-        System.out.println(challengeService.getChallengeListsByView(goingList));
+        List<Challenges> goingList = challengeService.getChallengeListByEndDateAndStartDate();
+        System.out.println(challengeService.getChallengeListByView(goingList));
     }
 
     @Test
     public void printGoingLatestChallengesDB() {
-        List<Challenges> goingList = challengeService.getChallengeListsByEndDateAndStartDate();
-        System.out.println(challengeService.getChallengeListsByDate(goingList));
+        List<Challenges> goingList = challengeService.getChallengeListByEndDateAndStartDate();
+        System.out.println(challengeService.getChallengeListByDate(goingList));
     }
 }

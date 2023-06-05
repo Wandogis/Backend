@@ -21,21 +21,21 @@ public class ChallengeService {
     /**
      * 진행 예정 챌린지 목록
      */
-    public List<Challenges> getChallengeListsByStartDate() {
+    public List<Challenges> getChallengeListByStartDate() {
         return challengeRepository.findAllByStartDateAfter(LocalDateTime.now());
     }
 
     /**
      * 진행 중인 챌린지 목록
      */
-    public List<Challenges> getChallengeListsByEndDateAndStartDate() {
+    public List<Challenges> getChallengeListByEndDateAndStartDate() {
         return challengeRepository.findAllByEndDateAfterAndStartDateBefore(LocalDateTime.now(), LocalDateTime.now());
     }
 
     /**
      * 챌린지 목록 인기순
      */
-    public List<Challenges> getChallengeListsByView(List<Challenges> list) {
+    public List<Challenges> getChallengeListByView(List<Challenges> list) {
         Collections.sort(list, new ChallengeViewComparator());    // view 수로 정렬
         return list.subList(0, 3);    // 정렬된 리스트 중 앞 5개만 뽑음
     }
@@ -43,9 +43,16 @@ public class ChallengeService {
     /**
      * 챌린지 목록 최신순
      */
-    public List<Challenges> getChallengeListsByDate(List<Challenges> list) {
+    public List<Challenges> getChallengeListByDate(List<Challenges> list) {
         Collections.sort(list, new ChallengDateComparator());    // startDate 빠른 순으로 정렬
-        return list.subList(0, 3);    // 정렬된 리스트 중 앞 5개만 뽑음
+        return list.subList(0, 1);    // 정렬된 리스트 중 앞 5개만 뽑음
+    }
+
+    /**
+     * 도서 상세 페이지에서 해당 도서로 진행 예정인 챌린지 목록
+     */
+    public List<Challenges> getChallengeListByIsbnAndDate(String isbn) {
+        return challengeRepository.findAllByIsbnEqualsAndStartDateAfter(isbn, LocalDateTime.now());
     }
 }
 

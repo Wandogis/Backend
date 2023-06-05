@@ -3,6 +3,7 @@ package wandogis.wandogi.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wandogis.wandogi.domain.Challenges;
 import wandogis.wandogi.service.ChallengeService;
@@ -20,8 +21,8 @@ public class ChallengeController {
      */
     @GetMapping("/list/expected-view")
     public Object expectedViewList() {
-        List<Challenges> expectedList = challengeService.getChallengeListsByStartDate();
-        List<Challenges> viewList = challengeService.getChallengeListsByView(expectedList);
+        List<Challenges> expectedList = challengeService.getChallengeListByStartDate();
+        List<Challenges> viewList = challengeService.getChallengeListByView(expectedList);
         return viewList;
     }
 
@@ -30,8 +31,8 @@ public class ChallengeController {
      */
     @GetMapping("/list/expected-latest")
     public Object expectedLatestList() {
-        List<Challenges> expectedList = challengeService.getChallengeListsByStartDate();
-        List<Challenges> latestList = challengeService.getChallengeListsByDate(expectedList);
+        List<Challenges> expectedList = challengeService.getChallengeListByStartDate();
+        List<Challenges> latestList = challengeService.getChallengeListByDate(expectedList);
         return latestList;
     }
 
@@ -40,8 +41,8 @@ public class ChallengeController {
      */
     @GetMapping("/list/going-view")
     public Object goingViewList() {
-        List<Challenges> goingList = challengeService.getChallengeListsByEndDateAndStartDate();
-        List<Challenges> viewList = challengeService.getChallengeListsByView(goingList);
+        List<Challenges> goingList = challengeService.getChallengeListByEndDateAndStartDate();
+        List<Challenges> viewList = challengeService.getChallengeListByView(goingList);
         return viewList;
     }
 
@@ -50,8 +51,18 @@ public class ChallengeController {
      */
     @GetMapping("/list/going-latest")
     public Object goingLatestList() {
-        List<Challenges> goingList = challengeService.getChallengeListsByEndDateAndStartDate();
-        List<Challenges> latestList = challengeService.getChallengeListsByDate(goingList);
+        List<Challenges> goingList = challengeService.getChallengeListByEndDateAndStartDate();
+        List<Challenges> latestList = challengeService.getChallengeListByDate(goingList);
         return latestList;
+    }
+
+    /**
+     * isbn이 같은 진행 예정 챌린지
+     */
+    @GetMapping("/list/expected")
+    public Object expectedLatestListByIsbn(@RequestParam String isbn) {
+        List<Challenges> isbnList = challengeService.getChallengeListByIsbnAndDate(isbn);
+        List<Challenges> isbnLatestList = challengeService.getChallengeListByDate(isbnList);
+        return isbnLatestList;
     }
 }

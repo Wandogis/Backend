@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import wandogis.wandogi.domain.Challenges;
 import wandogis.wandogi.repository.ChallengeRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,16 +35,20 @@ public class ChallengeService {
      * 챌린지 목록 인기순
      */
     public List<Challenges> getChallengeListByView(List<Challenges> list) {
+        if (list == null) return null;
         Collections.sort(list, new ChallengeViewComparator());    // view 수로 정렬
-        return list.subList(0, 3);    // 정렬된 리스트 중 앞 5개만 뽑음
+        if (list.size() >= 5) return list.subList(0, 5);  // 정렬된 list 중 앞 5개만 뽑음
+        else return list;
     }
 
     /**
      * 챌린지 목록 최신순
      */
     public List<Challenges> getChallengeListByDate(List<Challenges> list) {
+        if (list == null) return null;
         Collections.sort(list, new ChallengDateComparator());    // startDate 빠른 순으로 정렬
-        return list.subList(0, 1);    // 정렬된 리스트 중 앞 5개만 뽑음
+        if (list.size() >= 5) return list.subList(0, 5);  // 정렬된 리스트 중 앞 5개만 뽑음
+        else return list;
     }
 
     /**

@@ -9,17 +9,18 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 public class Choice implements Serializable {
-    @JsonProperty("text")
-    private String text;
+    @JsonProperty("message")
+    private Message message;
     @JsonProperty("index")
     private Integer index;
     @JsonProperty("finish_reason")
     private String finishReason;
 
     @Builder
-    public Choice(String text, Integer index, String finishReason) {
-        this.text = text;
+    public Choice(Message message, Integer index, String finishReason) {
+        this.message = message;
         this.index = index;
         this.finishReason = finishReason;
     }
+
 }

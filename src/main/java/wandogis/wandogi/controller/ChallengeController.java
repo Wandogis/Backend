@@ -22,7 +22,7 @@ public class ChallengeController {
     @GetMapping("/list/expected-view")
     public Object expectedViewList() {
         List<Challenges> expectedList = challengeService.getChallengeListByStartDate();
-        List<Challenges> viewList = challengeService.getChallengeListByView(expectedList);
+        List<Challenges> viewList = challengeService.getChallengeListByPeople(expectedList);
         return viewList;
     }
 
@@ -42,7 +42,7 @@ public class ChallengeController {
     @GetMapping("/list/going-view")
     public Object goingViewList() {
         List<Challenges> goingList = challengeService.getChallengeListByEndDateAndStartDate();
-        List<Challenges> viewList = challengeService.getChallengeListByView(goingList);
+        List<Challenges> viewList = challengeService.getChallengeListByPeople(goingList);
         return viewList;
     }
 

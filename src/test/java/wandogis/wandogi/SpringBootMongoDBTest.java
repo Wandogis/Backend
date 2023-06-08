@@ -43,7 +43,7 @@ public class SpringBootMongoDBTest {
     @Test
     public void printExpectedViewChallengesDB() {
         List<Challenges> list = challengeService.getChallengeListByStartDate();
-        System.out.println(challengeService.getChallengeListByView(list));
+        System.out.println(challengeService.getChallengeListByPeople(list));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class SpringBootMongoDBTest {
     @Test
     public void printGoingViewChallengesDB() {
         List<Challenges> goingList = challengeService.getChallengeListByEndDateAndStartDate();
-        System.out.println(challengeService.getChallengeListByView(goingList));
+        System.out.println(challengeService.getChallengeListByPeople(goingList));
     }
 
     @Test

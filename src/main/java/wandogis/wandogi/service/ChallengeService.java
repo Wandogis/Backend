@@ -36,7 +36,7 @@ public class ChallengeService {
      */
     public List<Challenges> getChallengeListByView(List<Challenges> list) {
         if (list == null) return null;
-        Collections.sort(list, new ChallengeViewComparator());    // view 수로 정렬
+        Collections.sort(list, new ChallengePeopleComparator());    // view 수로 정렬
         if (list.size() >= 5) return list.subList(0, 5);  // 정렬된 list 중 앞 5개만 뽑음
         else return list;
     }
@@ -59,11 +59,11 @@ public class ChallengeService {
     }
 }
 
-class ChallengeViewComparator implements Comparator<Challenges> {
+class ChallengePeopleComparator implements Comparator<Challenges> {
     @Override
     public int compare(Challenges o1, Challenges o2) {
-        if (o1.getView() < o2.getView()) return 1;
-        else if (o1.getView() > o2.getView()) return -1;
+        if (o1.getPeople().size() < o2.getPeople().size()) return 1;
+        else if (o1.getPeople().size() > o2.getPeople().size()) return -1;
         else return 0;
     }
 }

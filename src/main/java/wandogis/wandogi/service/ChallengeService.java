@@ -34,7 +34,7 @@ public class ChallengeService {
     /**
      * 챌린지 목록 인기순
      */
-    public List<Challenges> getChallengeListByView(List<Challenges> list) {
+    public List<Challenges> getChallengeListByPeople(List<Challenges> list) {
         if (list == null) return null;
         Collections.sort(list, new ChallengePeopleComparator());    // view 수로 정렬
         if (list.size() >= 5) return list.subList(0, 5);  // 정렬된 list 중 앞 5개만 뽑음

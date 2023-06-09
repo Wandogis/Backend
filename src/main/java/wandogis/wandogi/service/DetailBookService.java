@@ -51,6 +51,8 @@ public class DetailBookService {
         result.put("img", data.get("cover"));
         result.put("author", data.get("author"));
         result.put("description", data.get("description"));
+        String[] categoryArr = data.get("categoryName").toString().split(">");
+        result.put("category", categoryArr[categoryArr.length-1]);
         result.put("pubDate", data.get("pubDate"));
         result.put("publisher", data.get("publisher"));
         JSONObject subInfo = (JSONObject) data.get("subInfo");

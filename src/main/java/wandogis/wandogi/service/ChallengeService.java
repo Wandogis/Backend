@@ -1,7 +1,10 @@
 package wandogis.wandogi.service;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import wandogis.wandogi.domain.Challenges;
+import wandogis.wandogi.dto.ChallengeCreateDto;
 import wandogis.wandogi.repository.ChallengeRepository;
 
 import java.time.LocalDateTime;
@@ -12,9 +15,11 @@ import java.util.List;
 @Service
 public class ChallengeService {
     private final ChallengeRepository challengeRepository;
+    private DetailBookService detailBookService;
 
-    public ChallengeService(ChallengeRepository challengeRepository) {
+    public ChallengeService(ChallengeRepository challengeRepository, DetailBookService detailBookService) {
         this.challengeRepository = challengeRepository;
+        this.detailBookService = detailBookService;
     }
 
     /**
@@ -56,6 +61,23 @@ public class ChallengeService {
      */
     public List<Challenges> getChallengeListByIsbnAndDate(String isbn) {
         return challengeRepository.findAllByIsbnEqualsAndStartDateAfter(isbn, LocalDateTime.now());
+    }
+
+    /**
+     * 챌린지 생성
+     * isbn으로 해당 책에 대한 정보를 받아온 뒤, challenges 테이블에 해당 정보를 추가해서 함께 저장
+     */
+    public void saveChallenge(ChallengeCreateDto challengeCreateDto, String isbn) throws ParseException {
+        JSONObject book = detailBookService.getBookDetailInfoFromAladin(isbn);
+        challengeCreateDto.setIsbn((String) book.get("isbn"));
+        challengeCreateDto.setTitle((String) book.get("title"));
+        challengeCreateDto.setAuthor((String) book.get("author"));
+        challengeCreateDto.setPhoto((String) book.get("img"));
+        challengeCreateDto.setDescription((String) book.get("description"));
+        challengeCreateDto.setCategory((String) book.get("category"));
+        challengeCreateDto.setPage(Integer.parseInt(String.valueOf(book.get("page"))));
+        Challenges challenge = challengeCreateDto.toEntity();
+        challengeRepository.save(challenge);
     }
 }
 

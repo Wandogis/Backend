@@ -3,6 +3,7 @@ package wandogis.wandogi.gpt;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -16,22 +17,23 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@Data
 @Document(collection = "book_test")
 public class ChatGptResponseDto implements Serializable {
     @Id  // Move this annotation back here
     private String id;
     private String object;
-    private Long created;
+    private String created;
     private String model;
     private List<Choice> choices;
 
     // Remove @Id annotation from this field
-    private String bookTitle;
+    private String title;
     private String isbn;
 
     @Builder
     public ChatGptResponseDto(String id, String object,
-                              Long created, String model,  // Change this line
+                              String created, String model,  // Change this line
                               List<Choice> choices) {
         this.id = id;
         this.object = object;
@@ -40,20 +42,13 @@ public class ChatGptResponseDto implements Serializable {
         this.choices = choices;
     }
 
-    public String getBookTitle() {
-        return this.bookTitle;
-    }
-
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
-    }
-
-    public String getIsbn() {
-        return this.isbn;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
+
 }
 

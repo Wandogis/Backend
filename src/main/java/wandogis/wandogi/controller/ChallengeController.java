@@ -1,11 +1,10 @@
 package wandogis.wandogi.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.json.simple.parser.ParseException;
+import org.springframework.web.bind.annotation.*;
 import wandogis.wandogi.domain.Challenges;
+import wandogis.wandogi.dto.ChallengeCreateDto;
 import wandogis.wandogi.service.ChallengeService;
 
 import java.util.List;
@@ -64,5 +63,13 @@ public class ChallengeController {
         List<Challenges> isbnList = challengeService.getChallengeListByIsbnAndDate(isbn);
         List<Challenges> isbnLatestList = challengeService.getChallengeListByDate(isbnList);
         return isbnLatestList;
+    }
+
+    /**
+     * 챌린지 생성
+     */
+    @PostMapping("/create")
+    public void createChallenge(@RequestParam String isbn, @RequestBody ChallengeCreateDto challengeCreateDto) throws ParseException {
+        challengeService.saveChallenge(challengeCreateDto, isbn);
     }
 }

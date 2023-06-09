@@ -2,6 +2,8 @@ package wandogis.wandogi.gpt;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,9 +15,12 @@ import wandogis.wandogi.repository.ChatGptResponseRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class ChatGptService {
+    private static final Logger logger = LoggerFactory.getLogger(ChatGptService.class);
     private static RestTemplate restTemplate = new RestTemplate();
 
     private final ChatGptResponseRepository responseRepository;
@@ -47,18 +52,19 @@ public class ChatGptService {
                 this.buildHttpEntity(chatGptRequestDto)
         );
 
-        String content = response.getChoices().get(0).getMessage().getContent();
-
-        // Using a JSON parsing library like Jackson
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            JsonNode jsonNode = mapper.readTree(content);
-            String bookTitle = jsonNode.get("title").asText();
-            String isbn = jsonNode.get("isbn").asText();
+        for (Choice choice : response.getChoices()) {
+            String content = choice.getMessage().getContent();
 
-            saveResponse(response, bookTitle, isbn);
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                JsonNode jsonNode = mapper.readTree(content);
+                String bookTitle = jsonNode.get("title").asText(); // Here
+                String isbn = jsonNode.get("isbn").asText(); // And here
+
+                saveResponse(response, bookTitle, isbn);
+            } catch (IOException e) {
+                logger.error("Error occurred while parsing the content: ", e);
+            }
         }
 
         return response;
@@ -74,9 +80,13 @@ public class ChatGptService {
         return null;
     }
 
-    public void saveResponse(ChatGptResponseDto response, String bookTitle, String isbn) {
-        response.setBookTitle(bookTitle);   // Set book title
-        response.setIsbn(isbn);             // Set ISBN
-        responseRepository.save(response);  // Save the response to MongoDB
+    public void saveResponse(ChatGptResponseDto response, String title, String isbn) {
+        try {
+            response.setTitle(title);   // Set book title
+            response.setIsbn(isbn);             // Set ISBN
+            responseRepository.save(response);  // Save the response to MongoDB
+        } catch (Exception e) {
+            logger.error("Error occurred while saving the response: ", e);
+        }
     }
 }

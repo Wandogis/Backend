@@ -24,3 +24,10 @@ public class Choice implements Serializable {
     }
 
 }
+
+
+//Choice 클래스: 질문에 대한 선택지를 나타내는 클래스
+//message: 선택지와 관련된 메시지 객체
+//index: 선택지의 인덱스.
+//finishReason: 선택지의 종료 이유
+//Choice 클래스의 생성자: message, index, finishReason를 인자로 받아 객체를 생성

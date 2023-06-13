@@ -2,8 +2,7 @@ package wandogis.wandogi.gpt;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,10 +12,10 @@ import org.springframework.web.client.RestTemplate;
 import wandogis.wandogi.repository.ChatGptResponseRepository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import wandogis.wandogi.service.DetailBookService;
 
 @Service
 public class ChatGptService {
@@ -25,10 +24,14 @@ public class ChatGptService {
 
     private final ChatGptResponseRepository responseRepository;
 
-    public ChatGptService(ChatGptResponseRepository responseRepository) {
+    private final DetailBookService detailBookService;
+
+    public ChatGptService(ChatGptResponseRepository responseRepository, DetailBookService detailBookService) {
         this.responseRepository = responseRepository;
+        this.detailBookService = detailBookService;
     }
 
+    //ChatGptRequestDto 객체를 기반으로 HttpEntity를 생성
     public HttpEntity<ChatGptRequestDto> buildHttpEntity(ChatGptRequestDto requestDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(ChatGptConfig.MEDIA_TYPE));
@@ -36,6 +39,7 @@ public class ChatGptService {
         return new HttpEntity<>(requestDto, headers);
     }
 
+    //gpt로부터 응답 받아옴
     public ChatGptResponseDto getResponse(HttpEntity<ChatGptRequestDto> chatGptRequestDtoHttpEntity) {
         ResponseEntity<ChatGptResponseDto> responseEntity = restTemplate.postForEntity(
                 ChatGptConfig.URL,
@@ -45,6 +49,7 @@ public class ChatGptService {
         return responseEntity.getBody();
     }
 
+    //gpt에 질문
     public ChatGptResponseDto askQuestion(QuestionRequestDto requestDto) {
         ChatGptRequestDto chatGptRequestDto = new ChatGptRequestDto(ChatGptConfig.MODEL, requestDto.getMessages());
 
@@ -64,6 +69,25 @@ public class ChatGptService {
                 saveResponse(response, bookTitle, isbn);
             } catch (IOException e) {
                 logger.error("Error occurred while parsing the content: ", e);
+            }
+        }
+
+        for (Choice choice : response.getChoices()) {
+            String content = choice.getMessage().getContent();
+
+            try {
+                JsonNode jsonNode = mapper.readTree(content);
+                String bookTitle = jsonNode.get("title").asText(); // Here
+                String isbn = jsonNode.get("isbn").asText(); // And here
+
+                saveResponse(response, bookTitle, isbn);
+
+                // Aladin API 호출 및 도서 정보 저장
+                detailBookService.getBookDetailInfoFromAladin(isbn);
+            } catch (IOException e) {
+                logger.error("Error occurred while parsing the content: ", e);
+            } catch (ParseException e) {
+                logger.error("Error occurred while getting book details: ", e);
             }
         }
 

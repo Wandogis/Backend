@@ -6,9 +6,10 @@ import wandogis.wandogi.domain.Challenges;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ChallengeRepository extends MongoRepository<Challenges, ObjectId> {
-    public List<Challenges> findAll();
+    public Optional<Challenges> findById(ObjectId id);
 
     public List<Challenges> findAllByStartDateAfter(LocalDateTime today);  // 진행 예정 챌린지 목록
     public List<Challenges> findAllByEndDateAfterAndStartDateBefore(LocalDateTime today, LocalDateTime now);   // 진행 중인 챌린지 목록

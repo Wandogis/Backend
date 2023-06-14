@@ -1,5 +1,6 @@
 package wandogis.wandogi.service;
 
+import org.bson.types.ObjectId;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class ChallengeService {
      * 챌린지 생성
      * isbn으로 해당 책에 대한 정보를 받아온 뒤, challenges 테이블에 해당 정보를 추가해서 함께 저장
      */
-    public void saveChallenge(ChallengeCreateDto challengeCreateDto, String isbn) throws ParseException {
+    public ObjectId saveChallenge(ChallengeCreateDto challengeCreateDto, String isbn) throws ParseException {
         JSONObject book = detailBookService.getBookDetailInfoFromAladin(isbn);
         challengeCreateDto.setIsbn((String) book.get("isbn"));
         challengeCreateDto.setTitle((String) book.get("title"));
@@ -78,6 +79,7 @@ public class ChallengeService {
         challengeCreateDto.setPage(Integer.parseInt(String.valueOf(book.get("page"))));
         Challenges challenge = challengeCreateDto.toEntity();
         challengeRepository.save(challenge);
+        return challenge.getId();
     }
 }
 

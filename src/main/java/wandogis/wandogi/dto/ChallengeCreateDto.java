@@ -1,6 +1,7 @@
 package wandogis.wandogi.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -24,7 +25,8 @@ public class ChallengeCreateDto {
     private String description;
     private String category;
     private int page;
-    private int view;
+    @Builder.Default
+    private int view = 0;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
     @JsonFormat(pattern = "yyyy-MM-dd")

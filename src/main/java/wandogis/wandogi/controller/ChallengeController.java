@@ -21,7 +21,7 @@ public class ChallengeController {
     /**
      * 진행 예정인 챌린지 목록 인기순
      */
-    @GetMapping("/list/expected-view")
+    @GetMapping("/list/expected-people")
     public Object expectedViewList() {
         List<Challenges> expectedList = challengeService.getChallengeListByStartDate();
         List<Challenges> viewList = challengeService.getChallengeListByPeople(expectedList);
@@ -41,7 +41,7 @@ public class ChallengeController {
     /**
      * 진행 중인 챌린지 인기순
      */
-    @GetMapping("/list/going-view")
+    @GetMapping("/list/going-people")
     public Object goingViewList() {
         List<Challenges> goingList = challengeService.getChallengeListByEndDateAndStartDate();
         List<Challenges> viewList = challengeService.getChallengeListByPeople(goingList);

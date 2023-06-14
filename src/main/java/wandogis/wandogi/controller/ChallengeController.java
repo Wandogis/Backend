@@ -1,11 +1,13 @@
 package wandogis.wandogi.controller;
 
 import lombok.AllArgsConstructor;
+import org.bson.types.ObjectId;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 import wandogis.wandogi.domain.Challenges;
 import wandogis.wandogi.dto.ChallengeCreateDto;
 import wandogis.wandogi.service.ChallengeService;
+import wandogis.wandogi.service.ProgressService;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RequestMapping("challenges")
 public class ChallengeController {
     private ChallengeService challengeService;
+    private ProgressService progressService;
 
     /**
      * 진행 예정인 챌린지 목록 인기순
@@ -70,6 +73,7 @@ public class ChallengeController {
      */
     @PostMapping("/create")
     public void createChallenge(@RequestParam String isbn, @RequestBody ChallengeCreateDto challengeCreateDto) throws ParseException {
-        challengeService.saveChallenge(challengeCreateDto, isbn);
+        ObjectId challengeId = challengeService.saveChallenge(challengeCreateDto, isbn);
+        progressService.saveChallengeUserAndProgress(challengeId);
     }
 }

@@ -33,15 +33,11 @@ public class Challenges {
     private Date startDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
-    @OneToMany(mappedBy = "challenges")
-    private ArrayList<Users> people = new ArrayList<>();   // 챌린지 참여한 사람들 Users 배열
-    private ArrayList<Double> progress;    // 진도율(people 배열과 동일한 index를 가진 값이 그 유저의 진도율)
-    @Column(nullable = true)
     private Boolean success;    // 챌린지 성공 여부(실패: False, 성공: True)
 
     @Builder
-    public Challenges(ObjectId id, String isbn, String title, String author, String photo, String description, String category, int page,
-                      int view, Date startDate, Date endDate, ArrayList<Users> people, ArrayList<Double> progress, Boolean success) {
+    public Challenges(ObjectId id, String isbn, String title, String author, String photo, String description,
+                      String category, int page, int view, Date startDate, Date endDate, Boolean success) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;

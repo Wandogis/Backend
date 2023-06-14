@@ -2,11 +2,9 @@ package wandogis.wandogi.domain;
 
 import lombok.*;
 import org.bson.types.ObjectId;
+import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -20,6 +18,7 @@ public class Progress {
     private Users user;
     @OneToOne
     private Challenges challenge;
+    @ColumnDefault("0.0")
     private Double progress;
 
     @Builder

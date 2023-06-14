@@ -5,8 +5,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import wandogis.wandogi.domain.Challenges;
+import wandogis.wandogi.domain.Progress;
 import wandogis.wandogi.dto.ChallengeCreateDto;
 import wandogis.wandogi.repository.ChallengeRepository;
+import wandogis.wandogi.repository.ProgressRepository;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -16,10 +18,12 @@ import java.util.List;
 @Service
 public class ChallengeService {
     private final ChallengeRepository challengeRepository;
+    private final ProgressRepository progressRepository;
     private DetailBookService detailBookService;
 
-    public ChallengeService(ChallengeRepository challengeRepository, DetailBookService detailBookService) {
+    public ChallengeService(ChallengeRepository challengeRepository, ProgressRepository progressRepository, DetailBookService detailBookService) {
         this.challengeRepository = challengeRepository;
+        this.progressRepository = progressRepository;
         this.detailBookService = detailBookService;
     }
 
@@ -38,11 +42,11 @@ public class ChallengeService {
     }
 
     /**
-     * 챌린지 목록 인기순
+     * 챌린지 목록 인기순 - 참여인원 순으로
      */
     public List<Challenges> getChallengeListByPeople(List<Challenges> list) {
         if (list == null) return null;
-        Collections.sort(list, new ChallengePeopleComparator());    // view 수로 정렬
+        Collections.sort(list, new ChallengePeopleComparator(progressRepository));    // view 수로 정렬
         if (list.size() >= 5) return list.subList(0, 5);  // 정렬된 list 중 앞 5개만 뽑음
         else return list;
     }
@@ -84,10 +88,19 @@ public class ChallengeService {
 }
 
 class ChallengePeopleComparator implements Comparator<Challenges> {
+    private final ProgressRepository progressRepository;
+
+    public ChallengePeopleComparator(ProgressRepository progressRepository) {
+        this.progressRepository = progressRepository;
+    }
+
     @Override
     public int compare(Challenges o1, Challenges o2) {
-        if (o1.getPeople().size() < o2.getPeople().size()) return 1;
-        else if (o1.getPeople().size() > o2.getPeople().size()) return -1;
+        List<Progress> challengesList1 = progressRepository.findAllByChallenge(o1);
+        List<Progress> challengesList2 = progressRepository.findAllByChallenge(o2);
+
+        if (challengesList1.size() < challengesList2.size()) return 1;
+        else if (challengesList1.size() > challengesList2.size()) return -1;
         else return 0;
     }
 }

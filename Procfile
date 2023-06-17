@@ -1,2 +1,2 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/bookStore.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/wandogi.jar
 

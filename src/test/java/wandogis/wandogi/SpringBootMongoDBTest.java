@@ -7,16 +7,15 @@ import wandogis.wandogi.domain.Challenges;
 import wandogis.wandogi.domain.Users;
 import wandogis.wandogi.repository.ChallengeRepository;
 import wandogis.wandogi.repository.PostsMongoDBRepository;
-import wandogis.wandogi.repository.UsersMongoDBRepository;
+import wandogis.wandogi.repository.UsersRepository;
 import wandogis.wandogi.service.ChallengeService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest()
 public class SpringBootMongoDBTest {
     @Autowired
-    private UsersMongoDBRepository mongoDBRepository;
+    private UsersRepository mongoDBRepository;
     @Autowired
     private PostsMongoDBRepository postsMongoDBRepository;
 
@@ -26,14 +25,14 @@ public class SpringBootMongoDBTest {
     @Autowired
     private ChallengeService challengeService;
 
-    @Test
-    public void printMongoDB() {
-        System.out.println(mongoDBRepository.findByName("park").getName());
-        List<Users> result = mongoDBRepository.findAll();
-        for(Users users : result) {
-            System.out.print(users.getName() + ", ");
-        }
-    }
+//    @Test
+//    public void printMongoDB() {
+//        System.out.println(mongoDBRepository.findByNickname("park").getName());
+//        List<Users> result = mongoDBRepository.findAll();
+//        for(Users users : result) {
+//            System.out.print(users.getName() + ", ");
+//        }
+//    }
 
 //    @Test
 //    public void printPostsDB() {

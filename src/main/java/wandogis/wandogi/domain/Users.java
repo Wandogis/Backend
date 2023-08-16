@@ -1,13 +1,18 @@
 package wandogis.wandogi.domain;//테이블정보
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
+import wandogis.wandogi.authentication.domain.oauth.OAuthProvider;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +22,7 @@ public class Users {
     @Column(nullable = false)
     private String nickname;    // 사용자 닉네임
     @Column(nullable = false)
-    private int socialType;     // 1: Naver, 2: Kakao
+    private OAuthProvider oAuthProvider;    // Naver, Kakao
     @Column(nullable = false)
     private String photo;       // 사용자 프로필 이미지
     private String genre;       // 도서 추천 때 선택 입력(선호하는 장르)
@@ -28,4 +33,12 @@ public class Users {
     private List<ObjectId> books;      // 유저가 선호하는 책(Books와 One-to-Many)
     private List<ObjectId> challenges; // 유저가 진행한 챌린지(Challenges와 Many-to-Many)
     private List<ObjectId> calendars;  // 유저 달력(날짜)(Calendars와 One-to-Many)
+
+    @Builder
+    public Users(String email, String nickname, String photo, OAuthProvider oAuthProvider) {
+        this.email = email;
+        this.nickname = nickname;
+        this.photo = photo;
+        this.oAuthProvider = oAuthProvider;
+    }
 }

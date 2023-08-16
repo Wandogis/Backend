@@ -1,7 +1,9 @@
 package wandogis.wandogi.domain;//테이블정보
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import wandogis.wandogi.authentication.domain.oauth.OAuthProvider;
 
@@ -10,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +35,7 @@ public class Users {
     private List<ObjectId> calendars;  // 유저 달력(날짜)(Calendars와 One-to-Many)
 
     @Builder
-    public Users(ObjectId id, String email, String nickname, String photo, OAuthProvider oAuthProvider) {
-        this.id = id;
+    public Users(String email, String nickname, String photo, OAuthProvider oAuthProvider) {
         this.email = email;
         this.nickname = nickname;
         this.photo = photo;

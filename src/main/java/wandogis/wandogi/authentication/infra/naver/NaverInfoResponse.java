@@ -21,7 +21,7 @@ public class NaverInfoResponse implements OAuthInfoResponse {
     static class Response {
         private String email;
         private String nickname;
-        private String photo;
+        private String profile_image;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class NaverInfoResponse implements OAuthInfoResponse {
 
     @Override
     public String getPhoto() {
-        return response.photo;
+        return response.profile_image;
     }
 
     @Override
